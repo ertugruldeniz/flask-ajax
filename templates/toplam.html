@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flask ile Ajax Post İşlemleri</title>
+    <!-- Jquery-Ajax Google Cdn-->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+          input{margin-bottom: 10px; padding:10px}
+          label{ color: darkseagreen; margin-right:15px }
+          fieldset{width:315px;padding:20px;text-align: center}
+          button{float: right; height:30px; background-color:khaki;border:1px solid orangered;border-radius:5px;}
+          form{margin-bottom: 40px}
+          legend{color: indianred}
+      </style>
+</head>
+
+<body>
+
+          <fieldset>
+              <legend>Flask İle Ajax İşlemleri</legend>
+                   <form  id="myForm" >
+
+                       <label>Sayı 1 Giriniz :</label> <input type="number" name="number1" id="number1" required placeholder="Sayı giriniz"> <br>
+                       <label>Sayı 2 Giriniz :</label> <input type="number" name="number2" id="number2" required placeholder="Sayı giriniz"> <br>
+                       <button id="fav" type="submit">Topla</button>
+                    </form>
+                    <hr>
+                    <h3> Toplam Değeri : <strong id="toplam" style="color: darkorchid"> 0 </strong> </h3>
+        </fieldset>
+ </body>
+
+<!-- Ajax işlemleri -->
+<script type="text/javascript">
+            $('#myForm').submit(function(e) {
+                    e.preventDefault();
+                    var data = {};
+                    var Form = this;
+                    $.each(this.elements, function(i, v) {
+                        var input = $(v);
+                        data[input.attr("name")] = input.val();
+                        delete data["undefined"];
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/toplam',
+                        dataType: 'json',
+                        contentType: 'application/json; charset=utf-8',
+                        data: JSON.stringify(data),
+                        context: Form,
+                        success: function(callback) {
+                            console.log(callback);
+                            $("#toplam").text(callback.toplam );
+                        },
+                        error: function() {
+                            $(this).html("error!");
+                        }
+                    });
+                });
+        </script>
+
+
+
+
+</html>
